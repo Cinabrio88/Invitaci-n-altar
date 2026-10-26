@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Altar de Muertos | Homenaje a Homero Gómez González</title>
 
-  <!-- Tipografías temáticas -->
+  <!-- Tipografías -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
       --monarca-naranja: #ff6f00;
       --monarca-amarillo: #ffb300;
       --morado-noche: #12031a;
-      --card-bg: rgba(22, 6, 31, 0.90);
+      --card-bg: rgba(22, 6, 31, 0.92);
       --texto: #fdfaf6;
       --dorado: #e6c280;
       --borde: rgba(255, 111, 0, 0.45);
@@ -28,7 +28,7 @@
     }
 
     body {
-      background-color: var(--morado-noche);
+      background-color: #050108;
       color: var(--texto);
       font-family: 'Montserrat', sans-serif;
       min-height: 100vh;
@@ -36,11 +36,58 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-image: radial-gradient(circle at 50% 15%, #2a0b3b 0%, var(--morado-noche) 85%);
       position: relative;
     }
 
-    /* Fondo animado de mariposas monarca */
+    /* Pantalla inicial de bienvenida con veladora */
+    #pantalla-intro {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      text-align: center;
+      padding: 1.5rem;
+      transition: opacity 1.2s ease, visibility 1.2s;
+    }
+
+    .vela-intro {
+      font-size: 4.5rem;
+      filter: grayscale(0.7) drop-shadow(0 0 10px rgba(255, 111, 0, 0.4));
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: pulso-vela 2.5s infinite alternate ease-in-out;
+    }
+
+    @keyframes pulso-vela {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      100% { transform: scale(1.05); opacity: 1; }
+    }
+
+    .texto-intro {
+      margin-top: 1.8rem;
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.1rem;
+      color: var(--dorado);
+      max-width: 380px;
+      line-height: 1.6;
+      letter-spacing: 1px;
+    }
+
+    .subtexto-intro {
+      margin-top: 0.8rem;
+      font-size: 0.85rem;
+      color: #9c8a9e;
+      letter-spacing: 0.5px;
+    }
+
+    /* Canvas animado: Ráfaga y vuelo constante */
     #efecto-canvas {
       position: fixed;
       top: 0;
@@ -48,16 +95,16 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 1;
+      z-index: 10;
     }
 
-    /* Botón flotante para música */
+    /* Control de audio flotante */
     .audio-control {
       position: fixed;
       top: 1.2rem;
       right: 1.2rem;
       z-index: 100;
-      background: rgba(18, 3, 26, 0.75);
+      background: rgba(18, 3, 26, 0.8);
       border: 1px solid var(--monarca-naranja);
       border-radius: 50%;
       width: 48px;
@@ -70,18 +117,20 @@
       font-size: 1.2rem;
       box-shadow: 0 0 14px rgba(255, 111, 0, 0.4);
       backdrop-filter: blur(6px);
-      transition: transform 0.2s, background 0.2s;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease, transform 0.2s;
     }
 
-    .audio-control:hover {
-      transform: scale(1.08);
-      background: rgba(30, 8, 42, 0.95);
+    .audio-control.visible {
+      opacity: 1;
+      pointer-events: auto;
     }
 
-    /* Tarjeta principal */
+    /* Tarjeta de la invitación (Oculta al inicio) */
     .invitacion {
       position: relative;
-      z-index: 10;
+      z-index: 20;
       max-width: 540px;
       width: 90%;
       margin: 2.5rem auto;
@@ -90,8 +139,16 @@
       border-radius: 24px;
       padding: 2.5rem 2rem;
       text-align: center;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 111, 0, 0.15);
-      backdrop-filter: blur(12px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.85), 0 0 35px rgba(255, 111, 0, 0.2);
+      backdrop-filter: blur(14px);
+      opacity: 0;
+      transform: translateY(30px) scale(0.95);
+      transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .invitacion.activa {
+      opacity: 1;
+      transform: translateY(0) scale(1);
     }
 
     .adorno-monarca {
@@ -99,12 +156,6 @@
       letter-spacing: 0.6rem;
       margin-bottom: 0.8rem;
       display: inline-block;
-      animation: aleteo-adorno 2.5s ease-in-out infinite alternate;
-    }
-
-    @keyframes aleteo-adorno {
-      0% { transform: scale(1); }
-      100% { transform: scale(1.06); }
     }
 
     h1 {
@@ -125,7 +176,6 @@
       margin-bottom: 1.4rem;
     }
 
-    /* Caja de homenaje */
     .dedicatoria {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(230, 194, 128, 0.25);
@@ -150,9 +200,8 @@
       font-style: italic;
     }
 
-    /* Detalles del evento escolar */
     .info-bloque {
-      background: rgba(0, 0, 0, 0.25);
+      background: rgba(0, 0, 0, 0.3);
       border-left: 3px solid var(--monarca-naranja);
       border-radius: 0 10px 10px 0;
       padding: 1.1rem;
@@ -166,41 +215,6 @@
       color: var(--monarca-naranja);
     }
 
-    /* Veladora interactiva */
-    .ofrenda-container {
-      margin-bottom: 1.6rem;
-      padding: 1.1rem;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 14px;
-      border: 1px dashed rgba(255, 111, 0, 0.35);
-    }
-
-    .veladora {
-      font-size: 2.8rem;
-      cursor: pointer;
-      display: inline-block;
-      user-select: none;
-      filter: grayscale(0.8) opacity(0.7);
-      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .veladora.activa {
-      filter: grayscale(0) drop-shadow(0 0 20px var(--monarca-naranja));
-      animation: llama-viva 1.4s infinite alternate ease-in-out;
-    }
-
-    @keyframes llama-viva {
-      0% { transform: scale(1) rotate(0deg); }
-      100% { transform: scale(1.08) rotate(2deg); }
-    }
-
-    .veladora-contador {
-      font-size: 0.86rem;
-      margin-top: 0.5rem;
-      color: #dfd4e6;
-    }
-
-    /* Botones de acción */
     .btn-group {
       display: flex;
       flex-direction: column;
@@ -248,20 +262,28 @@
 </head>
 <body>
 
-  <!-- Audio vinculado a tu archivo local en GitHub -->
+  <!-- Audio vinculado al archivo mp3 subido -->
   <audio id="musica-fondo" loop preload="auto">
     <source src="la-llorona-karaoke-guitarra.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- Botón mute/play -->
+  <!-- Botón mute/play superior -->
   <button class="audio-control" id="btnAudio" title="Música: La Llorona" onclick="toggleAudio()">
-    🔇
+    🔊
   </button>
 
-  <!-- Canvas animado de mariposas -->
+  <!-- Pantalla de bienvenida interactiva -->
+  <div id="pantalla-intro" onclick="revelarInvitacion(event)">
+    <div class="vela-intro">🕯️</div>
+    <div class="texto-intro">Toca la vela para honrar la memoria de Homero Gómez González</div>
+    <div class="subtexto-intro">(Toca la pantalla para encender la ofrenda)</div>
+  </div>
+
+  <!-- Canvas para ráfaga y mariposas -->
   <canvas id="efecto-canvas"></canvas>
 
-  <main class="invitacion">
+  <!-- Tarjeta principal de la invitación -->
+  <main class="invitacion" id="tarjetaInvitacion">
     <div class="adorno-monarca">🦋 🏵️ 🦋</div>
 
     <h1>Altar de Muertos</h1>
@@ -275,14 +297,9 @@
     <section class="info-bloque">
       <p><strong>📅 Fecha:</strong> Jueves 29 de octubre de 2026</p>
       <p><strong>🏫 Lugar:</strong> Escuela Técnica 120 José Manuel de Herrera Sánchez</p>
-      <p><strong>🕒 Horario:</strong> [Ingresar horario del evento]</p>
+      <p><strong>🕒 Horario:</strong> 7:00 a. m. – 12:40 p. m.</p>
       <p><strong>📍 Actividad:</strong> Recorrido por el altar monumental y ofrendas escolares</p>
     </section>
-
-    <div class="ofrenda-container">
-      <div class="veladora" id="vela" onclick="encenderVela()">🕯️</div>
-      <p class="veladora-contador" id="texto-vela">Toca la veladora para encender una luz en su memoria</p>
-    </div>
 
     <div class="btn-group">
       <button class="btn btn-primario" onclick="agregarCalendario()">
@@ -295,144 +312,41 @@
   </main>
 
   <script>
-    /* Control de Audio */
+    /* ================= 1. Revelación y Audio ================= */
     const audio = document.getElementById('musica-fondo');
     const btnAudio = document.getElementById('btnAudio');
+    const pantallaIntro = document.getElementById('pantalla-intro');
+    const tarjeta = document.getElementById('tarjetaInvitacion');
+    let iniciado = false;
     let reproduciendo = false;
 
+    function revelarInvitacion(e) {
+      if (iniciado) return;
+      iniciado = true;
+
+      // 1. Iniciar música inmediatamente aprovechando el toque directo
+      audio.play().then(() => {
+        reproduciendo = true;
+        btnAudio.innerHTML = "🔊";
+      }).catch(err => console.log("Audio:", err));
+
+      // 2. Disparar ráfaga de mariposas desde el centro o la posición del toque
+      const origenX = e.clientX || window.innerWidth / 2;
+      const origenY = e.clientY || window.innerHeight / 2;
+      dispararRafaga(origenX, origenY);
+
+      // 3. Desvanecer pantalla negra
+      pantallaIntro.style.opacity = '0';
+      setTimeout(() => {
+        pantallaIntro.style.display = 'none';
+        btnAudio.classList.add('visible');
+      }, 1200);
+
+      // 4. Mostrar tarjeta principal
+      setTimeout(() => {
+        tarjeta.classList.add('activa');
+      }, 600);
+    }
+
     function toggleAudio() {
-      if (!reproduciendo) {
-        audio.play().then(() => {
-          reproduciendo = true;
-          btnAudio.innerHTML = "🔊";
-        }).catch(err => console.log("Interacción necesaria para reproducir audio:", err));
-      } else {
-        audio.pause();
-        reproduciendo = false;
-        btnAudio.innerHTML = "🔇";
-      }
-    }
-
-    /* Veladora interactiva */
-    let encendida = false;
-    let totalLuces = 184;
-
-    function encenderVela() {
-      const vela = document.getElementById('vela');
-      const texto = document.getElementById('texto-vela');
-
-      encendida = !encendida;
-      if (encendida) {
-        totalLuces++;
-        vela.innerHTML = "🔥";
-        vela.classList.add('activa');
-        texto.innerHTML = `¡Luz encendida! <strong>${totalLuces}</strong> luces guían el vuelo de regreso.`;
-        if (!reproduciendo) toggleAudio();
-      } else {
-        totalLuces--;
-        vela.innerHTML = "🕯️";
-        vela.classList.remove('activa');
-        texto.innerText = "Toca la veladora para encender una luz en su memoria";
-      }
-    }
-
-    /* Google Calendar */
-    function agregarCalendario() {
-      const titulo = "Altar de Muertos: Homenaje a Homero Gómez - Técnica 120";
-      const detalles = "Exhibición del Altar de Muertos en honor a Homero Gómez González (El Guardián de la Mariposa Monarca) en la Escuela Técnica 120 José Manuel de Herrera Sánchez.";
-      const lugar = "Escuela Técnica 120 José Manuel de Herrera Sánchez";
-      
-      const url = "https://calendar.google.com/calendar/render?action=TEMPLATE" +
-        "&text=" + encodeURIComponent(titulo) +
-        "&dates=20261029T140000Z/20261029T180000Z" +
-        "&details=" + encodeURIComponent(detalles) +
-        "&location=" + encodeURIComponent(lugar);
-
-      window.open(url, '_blank');
-    }
-
-    /* Animación Canvas: Mariposas Monarca */
-    const canvas = document.getElementById('efecto-canvas');
-    const ctx = canvas.getContext('2d');
-
-    let w, h;
-    function redimensionar() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', redimensionar);
-    redimensionar();
-
-    const mariposas = [];
-    const NUM_MARIPOSAS = 18;
-
-    for (let i = 0; i < NUM_MARIPOSAS; i++) {
-      mariposas.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        tamano: Math.random() * 8 + 10,
-        velY: Math.random() * -1.2 - 0.4,
-        velX: Math.random() * 0.8 - 0.4,
-        aleteo: Math.random() * Math.PI,
-        velAleteo: Math.random() * 0.12 + 0.08,
-        opacidad: Math.random() * 0.4 + 0.6
-      });
-    }
-
-    function dibujarMariposa(m) {
-      ctx.save();
-      ctx.translate(m.x, m.y);
-      ctx.globalAlpha = m.opacidad;
-
-      const factorAleteo = Math.sin(m.aleteo);
-      const escalaAla = Math.abs(factorAleteo) * 0.8 + 0.2;
-
-      ctx.fillStyle = '#ff6f00';
-      ctx.strokeStyle = '#220901';
-      ctx.lineWidth = 1.2;
-
-      // Ala derecha
-      ctx.beginPath();
-      ctx.ellipse(m.tamano * 0.6 * escalaAla, -m.tamano * 0.3, m.tamano * 0.7 * escalaAla, m.tamano * 0.5, 0.4, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.stroke();
-
-      // Ala izquierda
-      ctx.beginPath();
-      ctx.ellipse(-m.tamano * 0.6 * escalaAla, -m.tamano * 0.3, m.tamano * 0.7 * escalaAla, m.tamano * 0.5, -0.4, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.stroke();
-
-      // Cuerpo
-      ctx.fillStyle = '#1a0b05';
-      ctx.beginPath();
-      ctx.ellipse(0, 0, 1.5, m.tamano * 0.4, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.restore();
-    }
-
-    function animar() {
-      ctx.clearRect(0, 0, w, h);
-
-      mariposas.forEach(m => {
-        m.y += m.velY;
-        m.x += m.velX + Math.sin(m.y * 0.02) * 0.6;
-        m.aleteo += m.velAleteo;
-
-        dibujarMariposa(m);
-
-        if (m.y < -30) {
-          m.y = h + 30;
-          m.x = Math.random() * w;
-        }
-        if (m.x > w + 30) m.x = -30;
-        if (m.x < -30) m.x = w + 30;
-      });
-
-      requestAnimationFrame(animar);
-    }
-    animar();
-  </script>
-</body>
-</html>
+      if
