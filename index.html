@@ -349,4 +349,138 @@
     }
 
     function toggleAudio() {
-      if
+      if (!reproduciendo) {
+        audio.play().then(() => {
+          reproduciendo = true;
+          btnAudio.innerHTML = "🔊";
+        });
+      } else {
+        audio.pause();
+        reproduciendo = false;
+        btnAudio.innerHTML = "🔇";
+      }
+    }
+
+    /* ================= 2. Google Calendar ================= */
+    function agregarCalendario() {
+      const titulo = "Altar de Muertos: Homenaje a Homero Gómez - Técnica 120";
+      const detalles = "Exhibición del Altar de Muertos en honor a Homero Gómez González en la Escuela Técnica 120 José Manuel de Herrera Sánchez.";
+      const lugar = "Escuela Técnica 120 José Manuel de Herrera Sánchez";
+      
+      const url = "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+        "&text=" + encodeURIComponent(titulo) +
+        "&dates=20261029T130000Z/20261029T184000Z" +
+        "&details=" + encodeURIComponent(detalles) +
+        "&location=" + encodeURIComponent(lugar);
+
+      window.open(url, '_blank');
+    }
+
+    /* ================= 3. Animación de Mariposas Monarca (Ráfaga + Vuelo) ================= */
+    const canvas = document.getElementById('efecto-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let w, h;
+    function redimensionar() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', redimensionar);
+    redimensionar();
+
+    const mariposas = [];
+
+    // Función para crear la ráfaga explosiva al tocar la vela
+    function dispararRafaga(x, y) {
+      const totalRafaga = 38;
+      for (let i = 0; i < totalRafaga; i++) {
+        const angulo = Math.random() * Math.PI * 2;
+        const velocidad = Math.random() * 8 + 4;
+        mariposas.push({
+          x: x,
+          y: y,
+          tamano: Math.random() * 10 + 12,
+          velX: Math.cos(angulo) * velocidad,
+          velY: Math.sin(angulo) * velocidad - 2, // Sesgo hacia arriba
+          aleteo: Math.random() * Math.PI,
+          velAleteo: Math.random() * 0.25 + 0.15,
+          opacidad: 1,
+          fase: 'rafaga'
+        });
+      }
+    }
+
+    function dibujarMariposa(m) {
+      ctx.save();
+      ctx.translate(m.x, m.y);
+      ctx.globalAlpha = m.opacidad;
+
+      const factorAleteo = Math.sin(m.aleteo);
+      const escalaAla = Math.abs(factorAleteo) * 0.8 + 0.2;
+
+      ctx.fillStyle = '#ff6f00';
+      ctx.strokeStyle = '#220901';
+      ctx.lineWidth = 1.2;
+
+      // Ala derecha
+      ctx.beginPath();
+      ctx.ellipse(m.tamano * 0.6 * escalaAla, -m.tamano * 0.3, m.tamano * 0.7 * escalaAla, m.tamano * 0.5, 0.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Ala izquierda
+      ctx.beginPath();
+      ctx.ellipse(-m.tamano * 0.6 * escalaAla, -m.tamano * 0.3, m.tamano * 0.7 * escalaAla, m.tamano * 0.5, -0.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Cuerpo
+      ctx.fillStyle = '#1a0b05';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 1.5, m.tamano * 0.4, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function animar() {
+      ctx.clearRect(0, 0, w, h);
+
+      for (let i = mariposas.length - 1; i >= 0; i--) {
+        const m = mariposas[i];
+        m.aleteo += m.velAleteo;
+
+        if (m.fase === 'rafaga') {
+          m.x += m.velX;
+          m.y += m.velY;
+          // Fricción gradual para suavizar la ráfaga
+          m.velX *= 0.94;
+          m.velY *= 0.94;
+
+          // Transición a vuelo suave hacia arriba
+          if (Math.abs(m.velX) < 1.2 && Math.abs(m.velY) < 1.2) {
+            m.fase = 'vuelo';
+            m.velY = Math.random() * -1.4 - 0.6;
+            m.velX = Math.random() * 0.8 - 0.4;
+          }
+        } else {
+          // Vuelo constante ambiental
+          m.y += m.velY;
+          m.x += m.velX + Math.sin(m.y * 0.02) * 0.7;
+
+          // Reubicar cuando salgan por arriba
+          if (m.y < -40) {
+            m.y = h + 20;
+            m.x = Math.random() * w;
+          }
+        }
+
+        dibujarMariposa(m);
+      }
+
+      requestAnimationFrame(animar);
+    }
+    animar();
+  </script>
+</body>
+</html>
