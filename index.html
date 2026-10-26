@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Altar de Muertos | Homenaje a Homero Gómez González</title>
 
-  <!-- Fuentes elegantes y legibles -->
+  <!-- Tipografías temáticas -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -40,7 +40,7 @@
       position: relative;
     }
 
-    /* Canvas animado: Mariposas y pétalos */
+    /* Fondo animado de mariposas monarca */
     #efecto-canvas {
       position: fixed;
       top: 0;
@@ -60,16 +60,16 @@
       background: rgba(18, 3, 26, 0.75);
       border: 1px solid var(--monarca-naranja);
       border-radius: 50%;
-      width: 46px;
-      height: 46px;
+      width: 48px;
+      height: 48px;
       display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
       color: var(--monarca-amarillo);
-      font-size: 1.1rem;
-      box-shadow: 0 0 12px rgba(255, 111, 0, 0.35);
-      backdrop-filter: blur(5px);
+      font-size: 1.2rem;
+      box-shadow: 0 0 14px rgba(255, 111, 0, 0.4);
+      backdrop-filter: blur(6px);
       transition: transform 0.2s, background 0.2s;
     }
 
@@ -125,7 +125,7 @@
       margin-bottom: 1.4rem;
     }
 
-    /* Caja de dedicatoria */
+    /* Caja de homenaje */
     .dedicatoria {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(230, 194, 128, 0.25);
@@ -150,7 +150,7 @@
       font-style: italic;
     }
 
-    /* Detalles del evento */
+    /* Detalles del evento escolar */
     .info-bloque {
       background: rgba(0, 0, 0, 0.25);
       border-left: 3px solid var(--monarca-naranja);
@@ -200,7 +200,7 @@
       color: #dfd4e6;
     }
 
-    /* Botones */
+    /* Botones de acción */
     .btn-group {
       display: flex;
       flex-direction: column;
@@ -248,17 +248,17 @@
 </head>
 <body>
 
-  <!-- Música ambiental tradicional -->
+  <!-- Audio vinculado a tu archivo local en GitHub -->
   <audio id="musica-fondo" loop preload="auto">
-    <source src="https://assets.mixkit.co/music/preview/mixkit-serenade-of-the-dead-mexican-acoustic-guitar-1070.mp3" type="audio/mpeg">
+    <source src="la-llorona-karaoke-guitarra.mp3" type="audio/mpeg">
   </audio>
 
   <!-- Botón mute/play -->
-  <button class="audio-control" id="btnAudio" title="Música de fondo" onclick="toggleAudio()">
+  <button class="audio-control" id="btnAudio" title="Música: La Llorona" onclick="toggleAudio()">
     🔇
   </button>
 
-  <!-- Canvas: Mariposas monarca y pétalos flotantes -->
+  <!-- Canvas animado de mariposas -->
   <canvas id="efecto-canvas"></canvas>
 
   <main class="invitacion">
@@ -267,27 +267,23 @@
     <h1>Altar de Muertos</h1>
     <p class="subtitulo">El vuelo eterno de las almas</p>
 
-    <!-- Reseña del homenajeado -->
     <section class="dedicatoria">
       <span class="nombre">Homero Gómez González</span>
       <p>«El Guardián de las Mariposas Monarca». Honramos la memoria de quien dedicó su vida a proteger los bosques de oyamel y guiar el vuelo de miles de seres que hoy vuelven a visitarnos.</p>
     </section>
 
-    <!-- Datos del evento escolar -->
     <section class="info-bloque">
       <p><strong>📅 Fecha:</strong> Jueves 29 de octubre de 2026</p>
       <p><strong>🏫 Lugar:</strong> Escuela Técnica 120 José Manuel de Herrera Sánchez</p>
-      <p><strong>🕒 Horario:</strong> [Ingresar horario, ej. 8:30 AM - 1:30 PM]</p>
+      <p><strong>🕒 Horario:</strong> [Ingresar horario del evento]</p>
       <p><strong>📍 Actividad:</strong> Recorrido por el altar monumental y ofrendas escolares</p>
     </section>
 
-    <!-- Veladora interactiva -->
     <div class="ofrenda-container">
       <div class="veladora" id="vela" onclick="encenderVela()">🕯️</div>
       <p class="veladora-contador" id="texto-vela">Toca la veladora para encender una luz en su memoria</p>
     </div>
 
-    <!-- Botones de acción -->
     <div class="btn-group">
       <button class="btn btn-primario" onclick="agregarCalendario()">
         📅 Agendar en Google Calendar
@@ -299,7 +295,7 @@
   </main>
 
   <script>
-    /* ================= 1. Audio Control ================= */
+    /* Control de Audio */
     const audio = document.getElementById('musica-fondo');
     const btnAudio = document.getElementById('btnAudio');
     let reproduciendo = false;
@@ -309,7 +305,7 @@
         audio.play().then(() => {
           reproduciendo = true;
           btnAudio.innerHTML = "🔊";
-        }).catch(err => console.log("Interacción requerida para audio:", err));
+        }).catch(err => console.log("Interacción necesaria para reproducir audio:", err));
       } else {
         audio.pause();
         reproduciendo = false;
@@ -317,7 +313,7 @@
       }
     }
 
-    /* ================= 2. Veladora Interactiva ================= */
+    /* Veladora interactiva */
     let encendida = false;
     let totalLuces = 184;
 
@@ -340,7 +336,7 @@
       }
     }
 
-    /* ================= 3. Google Calendar ================= */
+    /* Google Calendar */
     function agregarCalendario() {
       const titulo = "Altar de Muertos: Homenaje a Homero Gómez - Técnica 120";
       const detalles = "Exhibición del Altar de Muertos en honor a Homero Gómez González (El Guardián de la Mariposa Monarca) en la Escuela Técnica 120 José Manuel de Herrera Sánchez.";
@@ -355,7 +351,7 @@
       window.open(url, '_blank');
     }
 
-    /* ================= 4. Canvas: Mariposas Monarca en Vuelo ================= */
+    /* Animación Canvas: Mariposas Monarca */
     const canvas = document.getElementById('efecto-canvas');
     const ctx = canvas.getContext('2d');
 
@@ -367,7 +363,6 @@
     window.addEventListener('resize', redimensionar);
     redimensionar();
 
-    // Crear partículas: mariposas y pétalos
     const mariposas = [];
     const NUM_MARIPOSAS = 18;
 
@@ -376,7 +371,7 @@
         x: Math.random() * w,
         y: Math.random() * h,
         tamano: Math.random() * 8 + 10,
-        velY: Math.random() * -1.2 - 0.4, // Vuelan hacia arriba
+        velY: Math.random() * -1.2 - 0.4,
         velX: Math.random() * 0.8 - 0.4,
         aleteo: Math.random() * Math.PI,
         velAleteo: Math.random() * 0.12 + 0.08,
@@ -389,11 +384,9 @@
       ctx.translate(m.x, m.y);
       ctx.globalAlpha = m.opacidad;
 
-      // El aleteo comprime el ancho simulando perspectiva 3D
       const factorAleteo = Math.sin(m.aleteo);
       const escalaAla = Math.abs(factorAleteo) * 0.8 + 0.2;
 
-      // Alas izquierda y derecha (naranja monarca con borde oscuro)
       ctx.fillStyle = '#ff6f00';
       ctx.strokeStyle = '#220901';
       ctx.lineWidth = 1.2;
@@ -410,7 +403,7 @@
       ctx.fill();
       ctx.stroke();
 
-      // Centro / Cuerpo
+      // Cuerpo
       ctx.fillStyle = '#1a0b05';
       ctx.beginPath();
       ctx.ellipse(0, 0, 1.5, m.tamano * 0.4, 0, 0, Math.PI * 2);
@@ -429,7 +422,6 @@
 
         dibujarMariposa(m);
 
-        // Si ascienden fuera de la pantalla, reaparecen abajo
         if (m.y < -30) {
           m.y = h + 30;
           m.x = Math.random() * w;
